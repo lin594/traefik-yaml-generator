@@ -81,6 +81,6 @@ func checkNetworks(config *viper.Viper, service Service) {
 	if _, ok := networks[service.network]; !ok {
 		networks[service.network] = make(map[string]interface{})
 	}
-	networks[service.network].(map[string]interface{})["external"] = "true"
+	networks[service.network].(map[string]interface{})["external"] = true
 	config.Set("networks", networks)
 }
