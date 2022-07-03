@@ -46,6 +46,13 @@ func checkService(config *viper.Viper, service Service) {
 	if labels == nil {
 		labels = []string{}
 	}
+	if address != "" {
+		if service.host == newService().host {
+			service.host = fmt.Sprintf("Host(`%s`)", address)
+		} else {
+			fmt.Println("[Warning] Flag rule is already exist, flag address will be ignored.")
+		}
+	}
 	labels = append(labels, fmt.Sprintf("traefik.http.routers.%s.rule=%s", service.name, service.host))
 	labels = append(labels, fmt.Sprintf("traefik.http.services.%s.loadbalancer.server.port=%d", service.name, service.port))
 	labels = append(labels, fmt.Sprintf("traefik.http.services.%s.loadbalancer.server.entrypoints=%s", service.name, service.entrypoints))
