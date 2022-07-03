@@ -1,0 +1,19 @@
+version: "3"
+services:
+  example:
+    build: .
+    image: example/example
+    container_name: example
+    labels:
+      - "traefik.http.routers.example.rule=Host(`example.com`)"
+      - "traefik.http.services.example.loadbalancer.server.port=80"
+      - "traefik.http.routers.example.entrypoints=websecure"
+      - "traefik.http.routers.example.tls=true"
+      - "traefik.http.routers.example.middlewares=example-compress"
+      - "traefik.http.middlewares.example-compress.compress=true"
+    networks:
+      - traefik-global-proxy
+
+networks:
+  traefik-global-proxy:
+    external: true
