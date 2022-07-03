@@ -30,10 +30,27 @@ func newConfig() *viper.Viper {
 }
 
 // 检查 service 中的各个属性
-func checkService(config *viper.Viper, service Service) {
-	property := "services." + service.name + "."
+func checkService(config *viper.Viper, name string, service Service) {
+	// 填充默认变量
+	if service.name == newService().name {
+		service.name = name
+	}
+	if address != "" {
+		if service.host == newService().host {
+			service.host = fmt.Sprintf("Host(`%s`)", address)
+		} else {
+			fmt.Println("[Warning] Flag rule is already exist, flag address will be ignored.")
+		}
+	}
 
+	// 获取 service 中的属性时所用前缀
+	property := "services." + name + "."
+
+	// container_name 字段
 	config.SetDefault(property+"container_name", service.name)
+	if service.name != newService().name {
+		config.Set(property+"container_name", service.name)
+	}
 
 	// image 字段
 	config.SetDefault(property+"image", service.image)
@@ -45,13 +62,6 @@ func checkService(config *viper.Viper, service Service) {
 	labels := config.GetStringSlice(property + "labels")
 	if labels == nil {
 		labels = []string{}
-	}
-	if address != "" {
-		if service.host == newService().host {
-			service.host = fmt.Sprintf("Host(`%s`)", address)
-		} else {
-			fmt.Println("[Warning] Flag rule is already exist, flag address will be ignored.")
-		}
 	}
 	labels = append(labels, fmt.Sprintf("traefik.http.routers.%s.rule=%s", service.name, service.host))
 	labels = append(labels, fmt.Sprintf("traefik.http.services.%s.loadbalancer.server.port=%d", service.name, service.port))

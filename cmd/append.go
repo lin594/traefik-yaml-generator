@@ -22,23 +22,24 @@ var appendCmd = &cobra.Command{
 		}
 
 		// 确认要添加 Traefik 的服务名称
+		var serviceName string = ""
 		if len(args) == 2 {
-			service.name = args[1]
-			if config.Get(service.name) == nil {
-				return fmt.Errorf("service %s not found", service.name)
+			serviceName = args[1]
+			if config.Get(serviceName) == nil {
+				return fmt.Errorf("service %s not found", serviceName)
 			}
 		} else {
 			for name := range config.GetStringMap("services") {
-				service.name = name
+				serviceName = name
 				break
 			}
-			if service.name == newService().name {
+			if serviceName == "" {
 				return fmt.Errorf("no service name specified")
 			}
 		}
 
 		// 检查 service 中的属性
-		checkService(config, service)
+		checkService(config, serviceName, service)
 
 		// 检查 networks
 		checkNetworks(config, service)

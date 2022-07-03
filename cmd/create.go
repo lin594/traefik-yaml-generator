@@ -20,8 +20,9 @@ var createCmd = &cobra.Command{
 		config := newConfig()
 
 		// 确认要添加 Traefik 的服务名称
+		var serviceName string
 		if len(args) == 1 {
-			service.name = args[0]
+			serviceName = args[0]
 		} else {
 			if service.name == newService().name {
 				return fmt.Errorf("no service name specified")
@@ -29,7 +30,7 @@ var createCmd = &cobra.Command{
 		}
 
 		// 检查 service 中的属性
-		checkService(config, service)
+		checkService(config, serviceName, service)
 
 		// 检查 networks
 		checkNetworks(config, service)
