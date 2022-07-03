@@ -21,6 +21,14 @@ func loadConfig(file string) (*viper.Viper, error) {
 	return config, err
 }
 
+// 创建一个 yaml 格式的 Viper 对象
+func newConfig() *viper.Viper {
+	config := viper.New()
+	config.SetConfigFile("docker-compose.yml")
+	config.Set("version", "3")
+	return config
+}
+
 // 检查 service 中的各个属性
 func checkService(config *viper.Viper, service Service) {
 	property := "services." + service.name + "."
