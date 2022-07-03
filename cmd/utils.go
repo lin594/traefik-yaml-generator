@@ -67,7 +67,7 @@ func checkService(config *viper.Viper, service Service) {
 	}
 	if !flag {
 		network = append(network, service.network)
-		config.Set(property+"network", network)
+		config.Set(property+"networks", network)
 	}
 
 }
