@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"errors"
+	"fmt"
 
 	"github.com/spf13/cobra"
 )
@@ -13,6 +14,25 @@ var rootCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		Error(cmd, args, errors.New("unrecognized command"))
 	},
+}
+
+var service Service = *newService() // Traefik 服务配置信息
+var output string = ""              // 输出文件路径
+
+func init() {
+	rootCmd.PersistentFlags().StringVarP(&output, "output", "o", "", "output file")
+	rootCmd.PersistentFlags().StringVarP(&service.name, "service", "s", newService().name, "service name")
+	rootCmd.PersistentFlags().StringVarP(&service.network, "network", "n", newService().network, "network name")
+	rootCmd.PersistentFlags().IntVarP(&service.port, "port", "p", newService().port, "internal port for the service")
+	var address string = ""
+	rootCmd.PersistentFlags().StringVarP(&address, "address", "a", "example.com", "Traefik host address")
+	if address != "" {
+		service.host = fmt.Sprintf("Host(`%s`)", address)
+	}
+	rootCmd.PersistentFlags().StringVarP(&service.host, "rule", "r", newService().host, "Traefik host rule")
+	rootCmd.PersistentFlags().StringVarP(&service.image, "image", "i", newService().image, "docker image")
+	rootCmd.PersistentFlags().StringVarP(&service.entrypoints, "entrypoints", "e", newService().entrypoints, "entrypoints for the Traefik")
+	rootCmd.PersistentFlags().BoolVarP(&service.tls, "tls", "t", newService().tls, "enable tls for the service in Traefik")
 }
 
 func Execute() {

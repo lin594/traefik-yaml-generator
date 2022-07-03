@@ -78,9 +78,6 @@ func checkNetworks(config *viper.Viper, service Service) {
 	config.Set("networks", networks)
 }
 
-var service Service = *newService() // Traefik 服务配置信息
-var output string = ""              // 输出文件路径
-
 var appendCmd = &cobra.Command{
 	Use:   "append file [service name]",
 	Short: "Append subcommand appends labels which traefik needs to the yaml file.",
@@ -107,7 +104,7 @@ var appendCmd = &cobra.Command{
 				service.name = name
 				break
 			}
-			if service.name == "" {
+			if service.name == newService().name {
 				return fmt.Errorf("no service name specified")
 			}
 		}
