@@ -65,9 +65,9 @@ func checkService(config *viper.Viper, name string, service Service) {
 	}
 	labels = append(labels, fmt.Sprintf("traefik.http.routers.%s.rule=%s", service.name, service.host))
 	labels = append(labels, fmt.Sprintf("traefik.http.services.%s.loadbalancer.server.port=%d", service.name, service.port))
-	labels = append(labels, fmt.Sprintf("traefik.http.services.%s.entrypoints=%s", service.name, service.entrypoints))
+	labels = append(labels, fmt.Sprintf("traefik.http.routers.%s.entrypoints=%s", service.name, service.entrypoints))
 	if service.tls {
-		labels = append(labels, fmt.Sprintf("traefik.http.services.%s.tls=true", service.name))
+		labels = append(labels, fmt.Sprintf("traefik.http.routers.%s.tls=true", service.name))
 	}
 	labels = append(labels, fmt.Sprintf("traefik.http.routers.%s.middlewares=%s-compress", service.name, service.name))
 	labels = append(labels, fmt.Sprintf("traefik.http.middlewares.%s-compress.compress=true", service.name))
