@@ -3,6 +3,7 @@ package cmd
 import (
 	"fmt"
 	"path/filepath"
+	"testing"
 
 	"github.com/spf13/viper"
 )
@@ -98,4 +99,16 @@ func checkNetworks(config *viper.Viper, service Service) {
 	}
 	networks[service.network].(map[string]interface{})["external"] = true
 	config.Set("networks", networks)
+}
+
+// 比较两个字符串数组是否相等
+func CompareTwoStringSlice(t *testing.T, s1 []string, s2 []string) {
+	if len(s1) != len(s2) {
+		t.Error("unexpected labels length")
+	}
+	for i, v := range s1 {
+		if v != s2[i] {
+			t.Error("unmatch labels!" + v + " " + s2[i])
+		}
+	}
 }

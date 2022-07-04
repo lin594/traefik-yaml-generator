@@ -15,11 +15,18 @@ var rootCmd = &cobra.Command{
 	},
 }
 
-var service Service = *newService() // Traefik 服务配置信息
-var output string = ""              // 输出文件路径
-var address string = ""             // 简化的 Traefik 主机地址规则
+var service Service // Traefik 服务配置信息
+var output string   // 输出文件路径
+var address string  // 简化的 Traefik 主机地址规则
+
+func InitVariables() {
+	service = *newService()
+	output = ""
+	address = ""
+}
 
 func init() {
+	InitVariables()
 	rootCmd.PersistentFlags().StringVarP(&output, "output", "o", "", "output file")
 	rootCmd.PersistentFlags().StringVarP(&service.name, "service", "s", newService().name, "service name")
 	rootCmd.PersistentFlags().StringVarP(&service.network, "network", "n", newService().network, "network name")
