@@ -2,7 +2,28 @@
 
 ## 简介 Breif
 
-Traefik Yaml Generator 主要用于生成、修改 `docker-compose.yml` 文件，使之能够顺利地搭配 `Traefik` 进行使用。
+`tygen` （Traefik Yaml Generator） 主要用于生成、修改 `docker-compose.yml` 文件，使之能够顺利地搭配 `Traefik` 进行使用。
+
+- [x] 创建配置文件
+- [x] 追加配置文件
+- [ ] 从环境变量中获取参数
+- [ ] 对 label 进行去重（包含二次确认）
+
+## 获取 Get
+
+你可以直接通过 `wget` 获取已发布的 Linux 下的二进制文件：
+
+```shell
+wget https://github.com/FrogDar/traefik-yaml-generator/releases/download/v0.0.1/tygen
+```
+
+当然，也能通过 `go install` 进行安装（只不过需要自己重命名一下x）
+
+```shell
+go install github.com/FrogDar/traefik-yaml-generator
+```
+
+> TODO: 让 `go install` 安装的文件名自动改为 `tygen`
 
 ## 命令 Commands
 
