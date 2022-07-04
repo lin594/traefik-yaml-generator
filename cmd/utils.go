@@ -10,13 +10,11 @@ import (
 // 从 file 中读取一个 Viper 对象
 func loadConfig(file string) (*viper.Viper, error) {
 	config := viper.New()
-	file, fileName := filepath.Split(file)
-	ext := filepath.Ext(fileName)
+	ext := filepath.Ext(file)
 	if ext != ".yaml" && ext != ".yml" {
 		return nil, fmt.Errorf("the file extension is not yaml")
 	}
-	config.AddConfigPath(file)     //设置读取的文件路径
-	config.SetConfigFile(fileName) //设置读取的文件
+	config.SetConfigFile(file) //设置读取的文件
 	err := config.ReadInConfig()
 	return config, err
 }
